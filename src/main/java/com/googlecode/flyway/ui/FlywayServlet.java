@@ -15,18 +15,32 @@
  */
 package com.googlecode.flyway.ui;
 
+import com.googlecode.flyway.core.Flyway;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ServiceLoader;
 
 @WebServlet(name="FlywayServlet", urlPatterns="/flyway")
 public class FlywayServlet extends HttpServlet {
 
+    private Flyway flyway;
+
+    @Override
+    public void init() throws ServletException {
+        ServiceLoader<FlywayProvider> providers = ServiceLoader.load(FlywayProvider.class);
+        if (providers.iterator().hasNext()) {
+            flyway = providers.iterator().next().provides();
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("flyway", flyway);
         req.getRequestDispatcher("flyway.jsp").forward(req, resp);
     }
 }
