@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-fragment>
+    <name>Flyway</name>
+    <servlet>
+        <servlet-name>FlywayServlet</servlet-name>
+        <servlet-class>com.googlecode.flyway.ui.FlywayServlet</servlet-class>
+    </servlet>
+</web-fragment>
